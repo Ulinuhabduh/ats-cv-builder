@@ -1,0 +1,14 @@
+/node_modules
+/.next/
+/out/
+/build
+.DS_Store
+*.pem
+npm-debug.log*
+.env*.local
+next-env.d.ts
+*.tsbuildinfo
+
+# Personal data — keep out of the repo
+*.cvproj.json
+*.pdf

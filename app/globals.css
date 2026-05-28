@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --page-bg: #f1f5f9;
+}
+
+body {
+  background: var(--page-bg);
+  color: #0f172a;
+}
+
+/* The CV sheet is sized to A4 so the on-screen preview matches the PDF. */
+.cv-sheet {
+  width: 210mm;
+  min-height: 297mm;
+  background: #fff;
+  margin: 0 auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Never split an entry across a page boundary (safety net for pagination). */
+.cv-block {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* ---- Print: only the CV sheet, full bleed, selectable text ---- */
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+  body {
+    background: #fff;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-area {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .preview-scale {
+    transform: none !important;
+  }
+  .cv-pages {
+    display: block !important;
+    gap: 0 !important;
+  }
+  .cv-sheet {
+    width: 210mm;
+    min-height: 297mm;
+    box-shadow: none !important;
+    margin: 0 !important;
+  }
+  /* Each rendered page maps to exactly one physical page. */
+  .cv-page {
+    break-after: page;
+    page-break-after: always;
+  }
+  .cv-page:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+}
+
+/* thin scrollbar for editor pane */
+.scroll-slim::-webkit-scrollbar {
+  width: 8px;
+}
+.scroll-slim::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
