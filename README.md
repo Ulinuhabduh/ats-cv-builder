@@ -1,56 +1,72 @@
 # ATS CV Builder
 
-Platform web untuk membuat CV yang **ramah ATS** (Applicant Tracking System). Dibangun dengan Next.js 14, TypeScript, dan Tailwind CSS. Semua data disimpan di browser (localStorage) — tidak ada server, tidak ada data yang dikirim keluar.
+A web platform for building **ATS-friendly** resumes (Applicant Tracking System). Built with Next.js 14, TypeScript, and Tailwind CSS. All data is stored in the browser (localStorage) — no server, nothing leaves your machine.
 
-## Fitur
+## Features
 
-- **Editor + Live Preview** — isi form, hasil langsung terlihat di samping dalam ukuran A4.
-- **3 Template ATS-friendly** — Classic, Modern, Minimal. Semua single-column dengan teks asli (selectable) agar mudah dibaca mesin ATS.
-- **Pilihan warna aksen** — sesuaikan tampilan tanpa mengorbankan keterbacaan.
-- **Analisa Skor ATS** — checklist otomatis (kontak, ringkasan, kata kerja aksi, pencapaian terukur, dll) dengan skor 0–100.
-- **Pencocokan Lowongan** — tempel deskripsi pekerjaan, lihat kata kunci yang sudah/belum ada di CV Anda.
-- **Ekspor PDF** — via dialog cetak browser (Save as PDF), menghasilkan PDF dengan teks asli yang bisa di-parse ATS.
-- **Save & Import Project** — unduh seluruh isi CV sebagai file `.cvproj.json`, lalu impor kembali kapan saja untuk melanjutkan/mengedit. Cocok untuk menyimpan beberapa versi CV.
+- **Editor + Live Preview** — fill in the form and see the result instantly at A4 size.
+- **Auto-paginated A4 preview** — content flows into real A4 pages; entries are never split across a page break, so the preview matches the exported PDF.
+- **3 ATS-friendly templates** — Classic, Modern, Minimal. All single-column with real, selectable text for easy ATS parsing.
+- **Accent color picker** — customize the look without hurting readability.
+- **ATS Score analysis** — automatic checklist (contact info, summary, action verbs, quantified results, etc.) with a 0–100 score.
+- **Job matching** — paste a job description and see which keywords are already in your CV and which are missing.
+- **PDF export** — via the browser print dialog (Save as PDF), producing a real-text PDF that ATS can parse.
+- **Save & Import Project** — download your entire CV as a `.cvproj.json` file and re-import it anytime to keep editing. Great for keeping multiple CV versions.
 
-## Menjalankan
+## Getting started
 
 ```bash
 npm install
 npm run dev      # http://localhost:3000
 ```
 
-Build produksi:
+Production build:
 
 ```bash
 npm run build
 npm start
 ```
 
-## Tips ekspor PDF terbaik untuk ATS
+## Best PDF export settings for ATS
 
-1. Klik **⬇ Unduh PDF**.
-2. Di dialog cetak, pilih tujuan **Save as PDF**.
-3. Set **Margins = None** dan aktifkan **Background graphics** agar warna aksen ikut tercetak.
+1. Click **⬇ Download PDF**.
+2. In the print dialog, set the destination to **Save as PDF**.
+3. Set **Margins = None** and enable **Background graphics** so the accent color prints.
 
-## Struktur
+## Project structure
 
 ```
 app/
   layout.tsx        # root layout + metadata
-  page.tsx          # halaman utama: toolbar, editor/ats tabs, preview
+  page.tsx          # main page: toolbar, editor/ATS tabs, preview
   globals.css       # Tailwind + print stylesheet (A4)
 components/
-  CVForm.tsx        # form editor semua section
-  CVDocument.tsx    # render CV (3 varian template)
-  ATSPanel.tsx      # skor ATS, checklist, keyword matching
-  ui.tsx            # primitif input/section/button
+  CVForm.tsx        # form editor for every section
+  CVDocument.tsx    # CV renderer (3 template variants) + A4 pagination
+  ATSPanel.tsx      # ATS score, checklist, keyword matching
+  ui.tsx            # input/section/button primitives
 lib/
-  types.ts          # tipe data CV
-  store.ts          # state Zustand + persist localStorage
-  atsAnalyzer.ts    # heuristik skor ATS + analisa kata kunci
-  sampleData.ts     # data contoh & template kosong
+  types.ts          # CV data types
+  store.ts          # Zustand state + localStorage persistence
+  atsAnalyzer.ts    # ATS scoring heuristics + keyword analysis
+  projectIO.ts      # export/import of .cvproj.json project files
+  sampleData.ts     # sample data & empty template
 ```
 
-## Catatan ATS
+## ATS notes
 
-Template sengaja dibuat **single-column tanpa tabel, ikon, atau kolom ganda**, memakai heading standar ("Pengalaman Kerja", "Pendidikan", "Keahlian"), dan font umum (Calibri/Arial/Georgia) — semua faktor yang membuat CV mudah di-parse oleh ATS modern.
+The templates are intentionally **single-column with no tables, icons, or multiple columns**, use standard headings ("Work Experience", "Education", "Skills"), and common fonts (Calibri/Arial/Georgia) — all factors that make a CV easy for modern ATS to parse.
+
+## Deployment
+
+Optimized for **Vercel** (zero config for Next.js):
+
+1. Push this repo to GitHub.
+2. On [vercel.com](https://vercel.com), **Add New → Project** and import the repo.
+3. Keep the defaults (Vercel detects Next.js) and click **Deploy**.
+
+Every subsequent `git push` triggers an automatic deployment.
+
+## Tech stack
+
+Next.js 14 (App Router) · TypeScript · Tailwind CSS · Zustand
