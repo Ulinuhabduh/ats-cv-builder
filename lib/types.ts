@@ -51,7 +51,16 @@ export interface LanguageItem {
   level: string;
 }
 
-export type TemplateId = "classic" | "modern" | "minimal";
+export interface PublicationItem {
+  id: string;
+  title: string;
+  venue: string;
+  authors: string;
+  year: string;
+  link: string;
+}
+
+export type TemplateId = "classic" | "modern" | "minimal" | "academic";
 
 export interface CVData {
   personal: Personal;
@@ -62,6 +71,12 @@ export interface CVData {
   projects: ProjectItem[];
   certifications: CertificationItem[];
   languages: LanguageItem[];
+  /** Leadership / volunteering positions — same shape as experience entries. */
+  leadership: ExperienceItem[];
+  publications: PublicationItem[];
+  /** Free-form short entries, one per line. */
+  awards: string[];
+  memberships: string[];
   template: TemplateId;
   accentColor: string;
 }

@@ -24,6 +24,14 @@ export default function CVForm() {
     addLanguage,
     updateLanguage,
     removeLanguage,
+    addLeadership,
+    updateLeadership,
+    removeLeadership,
+    addPublication,
+    updatePublication,
+    removePublication,
+    setAwards,
+    setMemberships,
   } = useCVStore();
 
   const p = cv.personal;
@@ -312,6 +320,145 @@ export default function CVForm() {
           ))}
           <GhostButton onClick={addCertification}>+ Add Certification</GhostButton>
         </div>
+      </Section>
+
+      {/* Leadership */}
+      <Section title="Leadership (optional)" desc="Organizations, clubs, or volunteer roles. Same fields as Experience.">
+        <div className="space-y-4">
+          {cv.leadership.map((e) => (
+            <div key={e.id} className="rounded-lg border border-gray-200 p-4">
+              <div className="grid grid-cols-2 gap-3">
+                <Field label="Role">
+                  <Input
+                    value={e.position}
+                    onChange={(ev) => updateLeadership(e.id, { position: ev.target.value })}
+                  />
+                </Field>
+                <Field label="Organization">
+                  <Input
+                    value={e.company}
+                    onChange={(ev) => updateLeadership(e.id, { company: ev.target.value })}
+                  />
+                </Field>
+                <Field label="Location">
+                  <Input
+                    value={e.location}
+                    onChange={(ev) => updateLeadership(e.id, { location: ev.target.value })}
+                  />
+                </Field>
+                <div className="grid grid-cols-2 gap-2">
+                  <Field label="Start">
+                    <Input
+                      value={e.startDate}
+                      placeholder="Aug 2023"
+                      onChange={(ev) => updateLeadership(e.id, { startDate: ev.target.value })}
+                    />
+                  </Field>
+                  <Field label="End">
+                    <Input
+                      value={e.endDate}
+                      placeholder="Present"
+                      disabled={e.current}
+                      onChange={(ev) => updateLeadership(e.id, { endDate: ev.target.value })}
+                    />
+                  </Field>
+                </div>
+              </div>
+              <label className="mt-2 flex items-center gap-2 text-xs text-gray-600">
+                <input
+                  type="checkbox"
+                  checked={e.current}
+                  onChange={(ev) => updateLeadership(e.id, { current: ev.target.checked })}
+                />
+                Currently active
+              </label>
+              <div className="mt-3">
+                <Field label="Details (one line = one bullet)">
+                  <Textarea
+                    rows={3}
+                    value={e.bullets.join("\n")}
+                    onChange={(ev) =>
+                      updateLeadership(e.id, { bullets: ev.target.value.split("\n") })
+                    }
+                  />
+                </Field>
+              </div>
+              <div className="mt-2 text-right">
+                <RemoveButton onClick={() => removeLeadership(e.id)} />
+              </div>
+            </div>
+          ))}
+          <GhostButton onClick={addLeadership}>+ Add Leadership</GhostButton>
+        </div>
+      </Section>
+
+      {/* Publications */}
+      <Section title="Publications (optional)" desc="Research papers, articles, posters. Cite as you'd write them on the page.">
+        <div className="space-y-3">
+          {cv.publications.map((p) => (
+            <div key={p.id} className="rounded-lg border border-gray-200 p-4 space-y-3">
+              <Field label="Title">
+                <Input
+                  value={p.title}
+                  onChange={(ev) => updatePublication(p.id, { title: ev.target.value })}
+                />
+              </Field>
+              <Field label="Authors (in order, comma-separated)">
+                <Input
+                  value={p.authors}
+                  placeholder="Last, First; Last, First"
+                  onChange={(ev) => updatePublication(p.id, { authors: ev.target.value })}
+                />
+              </Field>
+              <div className="grid grid-cols-[1fr_auto_1fr] gap-3">
+                <Field label="Venue / Journal / Conference">
+                  <Input
+                    value={p.venue}
+                    placeholder="CHI 2025"
+                    onChange={(ev) => updatePublication(p.id, { venue: ev.target.value })}
+                  />
+                </Field>
+                <Field label="Year">
+                  <Input
+                    className="w-20"
+                    value={p.year}
+                    onChange={(ev) => updatePublication(p.id, { year: ev.target.value })}
+                  />
+                </Field>
+                <Field label="Link (optional)">
+                  <Input
+                    value={p.link}
+                    onChange={(ev) => updatePublication(p.id, { link: ev.target.value })}
+                  />
+                </Field>
+              </div>
+              <div className="text-right">
+                <RemoveButton onClick={() => removePublication(p.id)} />
+              </div>
+            </div>
+          ))}
+          <GhostButton onClick={addPublication}>+ Add Publication</GhostButton>
+        </div>
+      </Section>
+
+      {/* Honors & Awards */}
+      <Section title="Honors & Awards (optional)" desc="One per line — they'll be joined as a compact paragraph on the page.">
+        <Textarea
+          rows={4}
+          value={cv.awards.join("\n")}
+          onChange={(e) => setAwards(e.target.value.split("\n"))}
+          placeholder={"Hackathon Champion (2024)\nDean's Honor List (2023)"}
+        />
+      </Section>
+
+      {/* Memberships */}
+      <Section title="Memberships (optional)" desc="Professional or academic societies. One per line.">
+        <Textarea
+          rows={3}
+          value={cv.memberships.join("\n")}
+          onChange={(e) => setMemberships(e.target.value.split("\n"))}
+          placeholder={"IEEE — Student Member (2024)\nAAAI — Student Member (2024)"}
+        />
       </Section>
 
       {/* Languages */}

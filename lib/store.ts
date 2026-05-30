@@ -8,6 +8,7 @@ import {
   ProjectItem,
   CertificationItem,
   LanguageItem,
+  PublicationItem,
   TemplateId,
 } from "./types";
 import { emptyCV, sampleCV } from "./sampleData";
@@ -48,6 +49,17 @@ interface CVState {
   addLanguage: () => void;
   updateLanguage: (id: string, patch: Partial<LanguageItem>) => void;
   removeLanguage: (id: string) => void;
+  // leadership (same shape as experience)
+  addLeadership: () => void;
+  updateLeadership: (id: string, patch: Partial<ExperienceItem>) => void;
+  removeLeadership: (id: string) => void;
+  // publications
+  addPublication: () => void;
+  updatePublication: (id: string, patch: Partial<PublicationItem>) => void;
+  removePublication: (id: string) => void;
+  // simple string lists
+  setAwards: (v: string[]) => void;
+  setMemberships: (v: string[]) => void;
 }
 
 export const useCVStore = create<CVState>()(
@@ -194,7 +206,78 @@ export const useCVStore = create<CVState>()(
         set((s) => ({
           cv: { ...s.cv, languages: s.cv.languages.filter((l) => l.id !== id) },
         })),
+
+      addLeadership: () =>
+        set((s) => ({
+          cv: {
+            ...s.cv,
+            leadership: [
+              ...s.cv.leadership,
+              {
+                id: uid(),
+                position: "",
+                company: "",
+                location: "",
+                startDate: "",
+                endDate: "",
+                current: false,
+                bullets: [""],
+              },
+            ],
+          },
+        })),
+      updateLeadership: (id, patch) =>
+        set((s) => ({
+          cv: {
+            ...s.cv,
+            leadership: s.cv.leadership.map((l) => (l.id === id ? { ...l, ...patch } : l)),
+          },
+        })),
+      removeLeadership: (id) =>
+        set((s) => ({
+          cv: { ...s.cv, leadership: s.cv.leadership.filter((l) => l.id !== id) },
+        })),
+
+      addPublication: () =>
+        set((s) => ({
+          cv: {
+            ...s.cv,
+            publications: [
+              ...s.cv.publications,
+              { id: uid(), title: "", venue: "", authors: "", year: "", link: "" },
+            ],
+          },
+        })),
+      updatePublication: (id, patch) =>
+        set((s) => ({
+          cv: {
+            ...s.cv,
+            publications: s.cv.publications.map((p) =>
+              p.id === id ? { ...p, ...patch } : p
+            ),
+          },
+        })),
+      removePublication: (id) =>
+        set((s) => ({
+          cv: { ...s.cv, publications: s.cv.publications.filter((p) => p.id !== id) },
+        })),
+
+      setAwards: (v) => set((s) => ({ cv: { ...s.cv, awards: v } })),
+      setMemberships: (v) => set((s) => ({ cv: { ...s.cv, memberships: v } })),
     }),
-    { name: "ats-cv-data" }
+    {
+      name: "ats-cv-data",
+      // Backfill any fields added in newer versions so old persisted payloads
+      // don't crash the renderer when they lack newly-introduced arrays.
+      merge: (persisted, current) => {
+        const c = current as CVState;
+        const p = (persisted ?? {}) as Partial<CVState> & { cv?: Partial<CVData> };
+        return {
+          ...c,
+          ...p,
+          cv: { ...c.cv, ...(p.cv ?? {}) },
+        };
+      },
+    }
   )
 );

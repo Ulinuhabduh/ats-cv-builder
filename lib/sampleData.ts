@@ -17,6 +17,10 @@ export const emptyCV: CVData = {
   projects: [],
   certifications: [],
   languages: [],
+  leadership: [],
+  publications: [],
+  awards: [],
+  memberships: [],
   template: "classic",
   accentColor: "#4f46e5",
 };
@@ -109,6 +113,10 @@ export const sampleCV: CVData = {
     { id: "lang1", name: "English", level: "Native" },
     { id: "lang2", name: "Spanish", level: "Professional" },
   ],
+  leadership: [],
+  publications: [],
+  awards: [],
+  memberships: [],
   template: "classic",
   accentColor: "#4f46e5",
 };

@@ -12,6 +12,7 @@ const TEMPLATES: { id: TemplateId; name: string }[] = [
   { id: "classic", name: "Classic" },
   { id: "modern", name: "Modern" },
   { id: "minimal", name: "Minimal" },
+  { id: "academic", name: "Academic" },
 ];
 
 const COLORS = ["#4f46e5", "#0f766e", "#b91c1c", "#1d4ed8", "#9333ea", "#111827"];

@@ -80,6 +80,10 @@ export function parseProject(raw: string): ParsedProject {
     projects: Array.isArray(src.projects) ? src.projects : [],
     certifications: Array.isArray(src.certifications) ? src.certifications : [],
     languages: Array.isArray(src.languages) ? src.languages : [],
+    leadership: Array.isArray(src.leadership) ? src.leadership : [],
+    publications: Array.isArray(src.publications) ? src.publications : [],
+    awards: Array.isArray(src.awards) ? src.awards : [],
+    memberships: Array.isArray(src.memberships) ? src.memberships : [],
     template: src.template ?? emptyCV.template,
     accentColor: src.accentColor ?? emptyCV.accentColor,
   };
